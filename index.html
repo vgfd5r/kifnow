@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="si">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>8.6 Bāra sēte ģarīsī</title>
+
+    <style>
+        :root {
+            --bg: #f3f7fb;
+            --card: #ffffff;
+            --accent: #2db34a;
+            --telegram: #2a9df4;
+            --messenger: #a255f7;
+            --muted: #6b7280;
+            --radius: 12px;
+            --shadow: 0 6px 18px rgba(10, 10, 20, 0.06);
+            --btn-h: 54px;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: var(--bg);
+        }
+
+        .wrap {
+            max-width: 480px;
+            margin: auto;
+            padding: 14px;
+        }
+
+        .box {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 14px;
+            box-shadow: var(--shadow);
+            margin-bottom: 14px;
+        }
+
+        /* top */
+        .top {
+            display: flex;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 56px;
+        }
+
+        .toptext {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .toptext b {
+            font-size: 16px;
+            color: #111;
+        }
+
+        /* progress */
+        .bar {
+            background: #e7eefb;
+            height: 16px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar span {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2db34a, #2a9df4);
+            display: block;
+            transition: .4s;
+        }
+
+        .bar-text {
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cta button {
+            width: 100%;
+            margin-top: 12px;
+            height: 48px;
+            border-radius: 10px;
+            border: 0;
+            background: #3b82f6;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            opacity: .5;
+            transition: all 0.3s;
+        }
+
+        .cta button.enabled {
+            opacity: 1;
+            box-shadow: 0 8px 18px rgba(59, 130, 246, .25);
+        }
+
+        .cta button.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(59, 130, 246, .35);
+        }
+
+        /* comments */
+        .comment-item {
+            display: flex;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .comment-body {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .meta {
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .comment-form {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .comment-form input {
+            flex: 1;
+            height: 44px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+        }
+
+        .comment-form button {
+            height: 44px;
+            background: #10b981;
+            border-radius: 10px;
+            border: 0;
+            color: #fff;
+            padding: 0 14px;
+        }
+
+        .icon-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .icon-btn {
+            flex: 1;
+            height: 60px;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon-btn .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .icon-btn .label {
+            font-size: 12px;
+        }
+
+        .whatsapp {
+            background: #25D366;
+        }
+
+        .telegram {
+            background: #0088cc;
+        }
+
+        .messenger {
+            background: #006AFF;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .success-message.show {
+            opacity: 1;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .share-message {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .site-link {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            word-break: break-all;
+            border: 1px dashed #ccc;
+        }
+
+        .device-info {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .session-message {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #856404;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+
+        <div class="page-title">8.6 Bāra sēte ģarīsī</div>
+
+        <!-- top -->
+        <div class="box top">
+            <div class="logo"><img src="prank.png" /></div>
+            <div class="toptext">
+                <b>තෑගි වසන්තය</b><br>
+                Share කරන්න — තෑගි දිනන්න!
+            </div>
+        </div>
+
+        <!-- share card -->
+        <div class="box">
+            <b>මෙම ලින්ක් එක බලලා ඔබත් Try කරලා බලන්න</b><br><br>
+            <div class="share-message">
+                <strong>Share කිරීමට අයිකන තෝරන්න:</strong><br>
+                අයිකන ක්ලික් කරන්න
+            </div>
+
+            <div class="icon-buttons">
+                <button class="icon-btn whatsapp" onclick="shareToWhatsApp()">
+                    <div class="icon">📱</div>
+                    <div class="label">WhatsApp</div>
+                </button>
+                <button class="icon-btn telegram" onclick="shareToTelegram()">
+                    <div class="icon">✈️</div>
+                    <div class="label">Telegram</div>
+                </button>
+                <button class="icon-btn messenger" onclick="shareToMessenger()">
+                    <div class="icon">💜</div>
+                    <div class="label">Messenger</div>
+                </button>
+            </div>
+            <div class="bar" style="margin-top:12px;">
+                <span id="barFill"></span>
+            </div>
+            <div class="bar-text">
+                <span>Shares: <span id="shareCountText">0</span>/20</span>
+                <span id="percentText">0%</span>
+            </div>
+
+            <div class="cta">
+                <button id="mainCta" disabled>20 shares required</button>
+            </div>
+        </div>
+
+        <!-- comment area -->
+        <div class="box">
+            <b>Comments</b>
+
+            <div class="comment-form">
+                <input id="commentInput" placeholder="ඔබේ අදහස් යොදන්න...">
+                <button onclick="addComment()">පළ කරන්න</button>
+            </div>
+
+            <div id="commentList" style="margin-top:12px;display:flex;flex-direction:column;gap:12px;">
+                <!-- Comments will be loaded here -->
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="successMessage" class="success-message">සාර්ථකව share කරන ලදී!</div>
+
+    <script>
+        const MAX_SHARES = 20;
+
+        // ALWAYS start from 0 - no localStorage usage
+        let shareCount = 0;
+
+        const barFill = document.getElementById("barFill");
+        const percentText = document.getElementById("percentText");
+        const shareCountText = document.getElementById("shareCountText");
+        const CTA = document.getElementById("mainCta");
+        const successMessage = document.getElementById("successMessage");
+        const commentList = document.getElementById("commentList");
+
+        // Initialize comments
+        const initialComments = [
+            {
+                name: "සුනේත්",
+                comment: "මුලින් හිතුවේ බොරුවක් කියලා, ඒත් මේකෙන් ඇත්තටම ලැබුනු තෑගි ටික ගැන ගොඩක් සතුටුයි!",
+                time: "15min ago",
+                device: "Samsung Galaxy m16"
+            },
+            {
+                name: "ප්‍රියන්ත",
+                comment: "මගේ යාළුවො ටිකත් මේක share කරපු නිසා ලැබුනු තෑගි ටික ගැන ගොඩක් සතුටුයි.",
+                time: "3 hours ago",
+                device: "iPhone 8"
+            },
+            {
+                name: "නිමේෂා",
+                comment: "මේකෙන් ලැබුනු තෑගි ටික ගැන ගොඩක් සතුටුයි. සුපිරි Site එකක්!",
+                time: "5 hours ago",
+                device: "Huawei y7a"
+            },
+            {
+                name: "රවීන්ද්‍ර",
+                comment: "මුලින් බය වුනා, ඒත් ඇත්තටම මේකෙන් ලැබුනු තෑගි ටික ගැන ගොඩක් සතුටුයි.",
+                time: "1 day ago",
+                device: ""
+            },
+            {
+                name: "දිලාන්",
+                comment: "මගේ පවුලේ අයටත් මේක share කරලා දුන්නා. සැමෝම ගොඩක් සතුටුයි!",
+                time: "1 day ago",
+                device: "OnePlus 9"
+            }
+        ];
+
+        // Load initial comments
+        function loadInitialComments() {
+            commentList.innerHTML = '';
+            initialComments.forEach(comment => {
+                addCommentToDOM(comment.name, comment.comment, comment.time, comment.device);
+            });
+        }
+
+        // Add comment to DOM
+        function addCommentToDOM(name, comment, time, device) {
+            const div = document.createElement("div");
+            div.className = "comment-item";
+            div.innerHTML = `
+                <div class="avatar">${name.charAt(0)}</div>
+                <div>
+                    <div class="comment-body"><b>${name}</b><br>${comment}</div>
+                    <div class="meta">${time} <span class="device-info">• ${device}</span></div>
+                </div>
+            `;
+            commentList.prepend(div);
+        }
+
+        // Update UI - ALWAYS starts from 0
+        function updateUI() {
+            let percent = Math.round((shareCount / MAX_SHARES) * 100);
+            barFill.style.width = percent + "%";
+            percentText.textContent = percent + "%";
+            shareCountText.textContent = shareCount;
+
+            if (percent >= 100) {
+                CTA.disabled = false;
+                CTA.classList.add("enabled");
+                CTA.textContent = "ඊළඟට යන්න";
+                CTA.onclick = () => window.location.href = "nextpage.html";
+            } else {
+                CTA.disabled = true;
+                CTA.classList.remove("enabled");
+                CTA.textContent = "20 shares required";
+            }
+        }
+
+        // Add new comment
+        function addComment() {
+            const input = document.getElementById("commentInput");
+            if (!input.value.trim()) return;
+
+            const currentTime = new Date();
+            const timeAgo = "තත්ක්ෂණයෙන්";
+
+            // Detect device
+            const userAgent = navigator.userAgent;
+            let device = "Mobile Device";
+
+            if (userAgent.includes('iPhone')) {
+                device = "iPhone";
+            } else if (userAgent.includes('Android')) {
+                device = "Android Phone";
+            } else if (userAgent.includes('Windows')) {
+                device = "Windows PC";
+            } else if (userAgent.includes('Mac')) {
+                device = "Mac";
+            }
+
+            addCommentToDOM("ඔබ", input.value, timeAgo, device);
+            input.value = "";
+        }
+
+        // Share functions - count only for current session
+        function shareToWhatsApp() {
+            const message = "https://vgfd5r.github.io/kifnow/";
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?text=${encodedMessage}`, "_blank");
+            showSuccessMessage("WhatsApp එකට share කරන ලදී!");
+            incrementShareCount();
+        }
+
+        function shareToTelegram() {
+            const message = "https://vgfd5r.github.io/kifnow/";
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://t.me/share/url?text=${encodedMessage}`, "_blank");
+            showSuccessMessage("Telegram එකට share කරන ලදී!");
+            incrementShareCount();
+        }
+
+        function shareToMessenger() {
+            const link = "https://vgfd5r.github.io/kifnow/";
+            window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(link)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`, "_blank");
+            showSuccessMessage("Messenger එකට share කරන ලදී!");
+            incrementShareCount();
+        }
+
+        function incrementShareCount() {
+            shareCount++;
+            // NO localStorage - count resets on refresh
+            updateUI();
+        }
+
+        function showSuccessMessage(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add("show");
+            setTimeout(() => {
+                successMessage.classList.remove("show");
+            }, 3000);
+        }
+
+        // Initialize - ALWAYS start from 0
+        updateUI();
+        loadInitialComments();
+
+        // Clear any existing localStorage data
+        if (localStorage.getItem("SHARE_COUNT")) {
+            localStorage.removeItem("SHARE_COUNT");
+        }
+    </script>
+
+</body>
+
+</html>
